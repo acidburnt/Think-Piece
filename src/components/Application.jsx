@@ -3,6 +3,7 @@ import { Switch, Route, Link } from 'react-router-dom';
 import Authentication from './Authentication';
 import Posts from './Posts';
 import UserProfile from './UserProfile';
+import PostPage from './PostPage';
 
 const Application = () => {
   return (
@@ -14,6 +15,7 @@ const Application = () => {
       <Switch>
         <Route exact path="/" component={Posts} />
         <Route path="/profile" component={UserProfile} />
+        <Route path="/posts/:id" component={PostPage} />
       </Switch>
     </main>
   );
