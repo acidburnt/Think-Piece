@@ -1,16 +1,16 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC0a1BABEfchWDBARSJ5r7VUxsKEjBBp68",
-  authDomain: "think-piece-3a56e.firebaseapp.com",
-  databaseURL: "https://think-piece-3a56e.firebaseio.com",
-  projectId: "think-piece-3a56e",
-  storageBucket: "think-piece-3a56e.appspot.com",
-  messagingSenderId: "878221368811",
-  appId: "1:878221368811:web:ec8321a49c5f4949"
+  apiKey: 'AIzaSyC0a1BABEfchWDBARSJ5r7VUxsKEjBBp68',
+  authDomain: 'think-piece-3a56e.firebaseapp.com',
+  databaseURL: 'https://think-piece-3a56e.firebaseio.com',
+  projectId: 'think-piece-3a56e',
+  storageBucket: 'think-piece-3a56e.appspot.com',
+  messagingSenderId: '878221368811',
+  appId: '1:878221368811:web:ec8321a49c5f4949'
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -46,7 +46,7 @@ export const createUserProfileDocument = async (user, additionalData) => {
         ...additionalData
       });
     } catch (e) {
-      console.error("Error creating user", e.message);
+      console.error('Error creating user', e.message);
     }
   }
   return getUserDocument(user.uid);
@@ -55,13 +55,9 @@ export const createUserProfileDocument = async (user, additionalData) => {
 export const getUserDocument = async uid => {
   if (!uid) return null;
   try {
-    const userDocument = await firestore
-      .collection("users")
-      .doc(uid)
-      .get();
-    return { uid, ...userDocument.data() };
+    return firestore.collection('users').doc(uid);
   } catch (e) {
-    console.error("error fetching user", e.message);
+    console.error('error fetching user', e.message);
   }
 };
 
