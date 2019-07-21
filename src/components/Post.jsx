@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import moment from 'moment';
 
 import { firestore } from '../firebase';
+import { UserContext } from '../providers/UserProvider';
+
+const belongsToCurrentUser = (currentUser, postAuthor) => {
+  if (!currentUser) return false;
+
+  return currentUser.uid === postAuthor.uid;
+};
 
 const Post = ({ title, content, user, createdAt, stars, comments, id }) => {
   const docRef = firestore.doc(`posts/${id}`);
+  const currentUser = useContext(UserContext);
 
   const handleRemove = () => docRef.delete();
   const handleAddStar = () => docRef.update({ stars: stars + 1 });
@@ -36,9 +44,11 @@ const Post = ({ title, content, user, createdAt, stars, comments, id }) => {
           <button className="star" onClick={() => handleAddStar(id)}>
             Star
           </button>
-          <button className="delete" onClick={() => handleRemove(id)}>
-            Delete
-          </button>
+          {belongsToCurrentUser(currentUser, user) && (
+            <button className="delete" onClick={() => handleRemove(id)}>
+              Delete
+            </button>
+          )}
         </div>
       </div>
     </article>
@@ -53,11 +63,11 @@ Post.defaultProps = {
     id: '123',
     displayName: 'Bill Murray',
     email: 'billmurray@mailinator.com',
-    photoURL: 'https://www.fillmurray.com/300/300',
+    photoURL: 'https://www.fillmurray.com/300/300'
   },
   createdAt: new Date(),
   stars: 0,
-  comments: 0,
+  comments: 0
 };
 
 export default Post;
