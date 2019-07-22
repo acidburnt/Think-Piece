@@ -1,64 +1,50 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { auth, firestore, storage } from '../firebase';
 
-export default class UserProfile extends React.Component {
-  state = { displayName: '' };
-  imageInput = null;
+const UserProfile = () => {
+  const [displayName, setDisplayName] = useState('');
+  let imageInput = useRef(null);
 
-  componentDidMount() {}
-
-  get uid() {
-    return auth.currentUser.uid;
-  }
-
-  get userRef() {
-    return firestore.doc(`users/${this.uid}`);
-  }
-
-  get file() {
-    return this.imageInput && this.imageInput.files[0];
-  }
-
-  handleChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+  const handleChange = event => {
+    const { value } = event.target;
+    setDisplayName(value);
   };
 
-  handleSubmit = event => {
+  const handleSubmit = event => {
+    const uid = auth.currentUser && auth.currentUser.uid;
+    const userRef = firestore.doc(`users/${uid}`);
+    const file = imageInput.current && imageInput.current.files[0];
     event.preventDefault();
-    const { displayName } = this.state;
-
     if (displayName) {
-      this.userRef.update({ displayName });
+      userRef.update({ displayName });
     }
-    if (this.file) {
+    if (file) {
       storage
         .ref()
         .child('user-profiles')
-        .child(this.uid)
-        .child(this.file.name)
-        .put(this.file)
+        .child(uid)
+        .child(file.name)
+        .put(file)
         .then(response => response.ref.getDownloadURL())
-        .then(photoURL => this.userRef.update({ photoURL }));
+        .then(photoURL => userRef.update({ photoURL }));
     }
   };
 
-  render() {
-    const { displayName } = this.state;
-    return (
-      <section className="UserProfile">
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            value={displayName}
-            name="displayName"
-            onChange={this.handleChange}
-            placeholder="Display name"
-          />
-          <input type="file" ref={ref => (this.imageInput = ref)} />
-          <input type="submit" className="update" />
-        </form>
-      </section>
-    );
-  }
-}
+  return (
+    <section className="UserProfile">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={displayName}
+          name="displayName"
+          onChange={handleChange}
+          placeholder="Display name"
+        />
+        <input type="file" ref={ref => (imageInput.current = ref)} />
+        <input type="submit" className="update" />
+      </form>
+    </section>
+  );
+};
+
+export default UserProfile;
