@@ -13,13 +13,12 @@ const UserProvider = ({ children }) => {
           setUser({ user: { uid: snapshot.id, ...snapshot.data() } });
         });
       }
-      return setUser(userAuth);
+      return setUser({ user: userAuth });
     });
     return () => {
       unsubscribeFromAuth();
     };
-  }, [setUser]);
-
+  }, []);
   return (
     <UserContext.Provider value={state.user}>{children}</UserContext.Provider>
   );

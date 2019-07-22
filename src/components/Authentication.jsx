@@ -3,9 +3,9 @@ import CurrentUser from './CurrentUser';
 import SignInAndSignUp from './SignInAndSignUp';
 import { UserContext } from '../providers/UserProvider';
 
-const Authentication = ({ loading }) => {
+const Authentication = () => {
   const user = useContext(UserContext);
-  if (loading) return null;
+  console.log(user);
   return <div>{user ? <CurrentUser {...user} /> : <SignInAndSignUp />}</div>;
 };
 
