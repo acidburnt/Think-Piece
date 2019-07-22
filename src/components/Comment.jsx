@@ -19,9 +19,9 @@ Comment.defaultProps = {
   user: {
     displayName: 'Bill Murray',
     email: 'billmurray@mailinator.com',
-    photoURL: 'https://www.fillmurray.com/300/300',
+    photoURL: 'https://www.fillmurray.com/300/300'
   },
-  createdAt: new Date(),
+  createdAt: new Date()
 };
 
 export default Comment;

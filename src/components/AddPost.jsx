@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { firestore, auth } from "../firebase";
+import React, { useState, useContext } from 'react';
+import { firestore } from '../firebase';
+import { UserContext } from '../providers/UserProvider';
 
 const AddPost = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const user = useContext(UserContext);
 
   const handleChangeTitle = e => {
     setTitle(e.target.value);
@@ -15,7 +17,9 @@ const AddPost = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    const { uid, displayName, email, photoURL } = auth.currentUser || {};
+    const { uid, displayName, email, photoURL } = user || {};
+
+    console.log(displayName);
     const post = {
       title,
       content,
@@ -30,9 +34,9 @@ const AddPost = () => {
       createdAt: new Date()
     };
 
-    firestore.collection("posts").add(post);
-    setTitle("");
-    setContent("");
+    firestore.collection('posts').add(post);
+    setTitle('');
+    setContent('');
   };
 
   return (

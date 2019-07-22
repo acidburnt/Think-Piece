@@ -34,6 +34,7 @@ const UserProfile = () => {
     <section className="UserProfile">
       <form onSubmit={handleSubmit}>
         <input
+          id="displayName"
           type="text"
           value={displayName}
           name="displayName"

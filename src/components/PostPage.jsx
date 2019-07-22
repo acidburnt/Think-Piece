@@ -38,7 +38,6 @@ const PostPage = props => {
 
   return (
     <section>
-      {console.log({ props, user })}
       {post && <Post {...post} />}
       <Comments comments={comments} onCreate={createComment} />
     </section>
